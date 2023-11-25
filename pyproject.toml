@@ -3,37 +3,36 @@ requires = ["setuptools", "wheel"]
 build-backend = "setuptools.build_meta"
 
 [project]
-name = "airflow-provider-sample"
+name = "airflow-provider-kaggle"
 authors = [
-    {name = "Pete DeJoy", email = "pete@astronomer.io"},
-    {name = "Josh Fell", email = "josh.d.fell@astronomer.io"},
+    {name = "Panagiotis Simakis", email = "sp1thas@autistici.org"},
 ]
 license = {text = "Apache License 2.0"}
-description = "A sample Apache Airflow provider package built by Astronomer."
+description = "A Kaggle Apache Airflow provider package."
 classifiers = [
     "Framework :: Apache Airflow",
     "Framework :: Apache Airflow :: Provider",
 ]
 dynamic = ["version"]
 requires-python = "~=3.8"
-dependencies = ["apache-airflow>=2.4"]
+dependencies = ["apache-airflow>=2.4", "kaggle"]
 
 [project.urls]
-Homepage = "https://astronomer.io"
-Source = "https://github.com/astronomer/airflow-provider-sample/"
+Homepage = "https://simakis.me"
+Source = "https://github.com/sp1thas/airflow-provider-kaggle/"
 
 [project.readme]
 file = "README.md"
 content-type = "text/markdown"
 
 [project.entry-points.apache_airflow_provider]
-provider_info = "sample_provider.__init__:get_provider_info"
+provider_info = "kaggle_provider.__init__:get_provider_info"
 
 [tool.setuptools]
 include-package-data = false
 
 [tool.setuptools.dynamic]
-version = {attr = "sample_provider.__version__"}
+version = {attr = "kaggle_provider.__version__"}
 
 [tool.setuptools.packages.find]
 exclude = ["*tests.*", "*tests"]
