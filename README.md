@@ -41,7 +41,7 @@ In order to use this airflow-provider, you have to create a `kaggle` connection:
 - `Conn ID`: `kaggle_default`
 - `Conn Type`: `Kaggle`
 - `User`: `<username>`
-- `Password`: `<password>`
+- `Key`: `<key>`
 
 **NOTE**: More details on how to get your Kaggle credentials are available [here](https://github.com/Kaggle/kaggle-api#api-credentials)
 
