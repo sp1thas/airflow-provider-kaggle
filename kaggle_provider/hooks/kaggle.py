@@ -17,6 +17,7 @@ class KaggleHook(BaseHook):
     default_conn_name = "kaggle_default"
     conn_type = "kaggle"
     hook_name = "Kaggle"
+    cred: Dict[str, str]
 
     @staticmethod
     def get_connection_form_widgets() -> dict[str, Any]:
@@ -86,7 +87,7 @@ class KaggleHook(BaseHook):
         """
         from sh import kaggle
 
-        _env = self.get_conn()
+        self.creds = self.get_conn()
 
         command_base = []
         if command:
@@ -94,11 +95,11 @@ class KaggleHook(BaseHook):
             if subcommand:
                 command_base.append(subcommand)
 
-        command = kaggle.bake(*command_base, **optional_arguments, _env=_env)
+        command = kaggle.bake(*command_base, **optional_arguments, _env=self.creds)
 
-        self.log.info(f"Running: f{str(command)}")
+        self.log.info(f"Running: f{str(command)}")  # type: ignore
 
-        return command()
+        return command()  # type: ignore
 
     def test_connection(self) -> Tuple[bool, str]:
         """Test a connection"""

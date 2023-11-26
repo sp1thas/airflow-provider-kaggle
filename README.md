@@ -12,7 +12,12 @@
   <h3 align="center">
   Airflow operators and hooks for interacting with the Kaggle API
 </h3>
-
+<p align="center">
+    <img alt="Mypy checked" src="https://img.shields.io/badge/mypy-checked-blue">
+    <img alt="Code style: Black" src="https://img.shields.io/badge/code%20style-black-black">
+    <img alt="pre-commit enabled" src="https://img.shields.io/badge/pre--commit-enabled-brightgreen?logo=pre-commit&logoColor=white">
+    <img alt="Apache Airflow version" src="https://img.shields.io/badge/Apache_Airflow-%3E=2.0-orange">
+</p>
 <br/>
 
 ## Installation

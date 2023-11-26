@@ -18,10 +18,11 @@ requires-python = "~=3.8"
 dependencies = ["apache-airflow>=2.0", "kaggle", "sh"]
 
 [project.optional-dependencies]
-tests = ["pytest", "pre-commit"]
+dev = ["pre-commit"]
+test = ["pytest"]
 
 [project.urls]
-Homepage = "https://simakis.me"
+Homepage = "https://github.com/sp1thas/airflow-provider-kaggle/"
 Source = "https://github.com/sp1thas/airflow-provider-kaggle/"
 
 [project.readme]
