@@ -1,0 +1,22 @@
+ci:
+    skip: [docker-compose-check]
+
+repos:
+-   repo: https://github.com/psf/black-pre-commit-mirror
+    rev: 23.11.0
+    hooks:
+    -   id: black
+
+-   repo: https://github.com/pre-commit/pre-commit-hooks
+    rev: v4.5.0
+    hooks:
+    -   id: check-added-large-files
+    -   id: check-ast
+    -   id: check-executables-have-shebangs
+    -   id: check-json
+    -   id: pretty-format-json
+    -   id: check-toml
+    -   id: check-yaml
+        args: [ --unsafe ]
+    -   id: detect-private-key
+    -   id: trailing-whitespace

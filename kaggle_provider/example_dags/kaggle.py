@@ -3,7 +3,6 @@ from pendulum import datetime
 from airflow.decorators import dag
 
 from kaggle_provider.operators.kaggle import KaggleOperator
-from kaggle_provider.sensors.kaggle import KaggleSensor
 
 
 @dag(
@@ -18,13 +17,25 @@ def kaggle_workflow():
     """
     ### Kaggle DAG
 
-    Showcases the kaggle provider package's operator and sensor.
+    Showcases the kaggle provider package's operator.
 
     To run this example, create a kaggle connection with:
     - id: kaggle_default
     - type: kaggle
     """
-    pass
+    competitions_list_op = KaggleOperator(
+        command="c",
+        subcommand="list",
+        optional_arguments={"sort-by": "prize", "v": True},
+    )
+
+    datasets_list_op = KaggleOperator(
+        command="d",
+        subcommand="list",
+        optional_arguments={"sort-by": "votes", "m": True},
+    )
+
+    competitions_list_op >> datasets_list_op
 
 
 kaggle_workflow()

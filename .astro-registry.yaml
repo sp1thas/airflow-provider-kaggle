@@ -14,8 +14,8 @@ docs_url: https://github.com/sp1thas/airflow-provider-kaggle/blob/main/README.md
 # The next sections should be organized by module type (e.g. operators, hooks, functions, decorators, etc.).
 #
 # Within each section, the ``module`` value should be the path.to.the.module.specifically. For example, if the
-# import path for a function is `from sample_provider.hooks.sample_hook import SampleHook` then the value
-# should be "sample_provider.hooks.sample.SampleHook".
+# import path for a function is `from kaggle_provider.hooks.kaggle_hook import KaggleHook` then the value
+# should be "kaggle_provider.hooks.kaggle.KaggleHook".
 
 hooks:
   - module: kaggle_provider.hooks.kaggle.KaggleHook

@@ -15,7 +15,10 @@ classifiers = [
 ]
 dynamic = ["version"]
 requires-python = "~=3.8"
-dependencies = ["apache-airflow>=2.4", "kaggle"]
+dependencies = ["apache-airflow>=2.0", "kaggle", "sh"]
+
+[project.optional-dependencies]
+tests = ["pytest", "pre-commit"]
 
 [project.urls]
 Homepage = "https://simakis.me"

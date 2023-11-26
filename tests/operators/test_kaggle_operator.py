@@ -5,7 +5,7 @@ Requires the unittest, pytest, and requests-mock Python libraries.
 
 Run test:
 
-    python3 -m unittest tests.operators.test_sample_operator.TestSampleOperator
+    python3 -m unittest tests.operators.test_kaggle_operator.TestKaggleOperator
 
 """
 
@@ -17,29 +17,29 @@ import requests_mock
 from unittest import mock
 
 # Import Operator
-from sample_provider.operators.sample import SampleOperator
+from kaggle_provider.operators.kaggle import KaggleOperator
 
 
 log = logging.getLogger(__name__)
 
 
-# Mock the `conn_sample` Airflow connection
-@mock.patch.dict('os.environ', AIRFLOW_CONN_CONN_SAMPLE='http://https%3A%2F%2Fwww.httpbin.org%2F')
-class TestSampleOperator:
+# Mock the `conn_kaggle` Airflow connection
+@mock.patch.dict(
+    "os.environ", AIRFLOW_CONN_CONN_KAGGLE="http://https%3A%2F%2Fwww.httpbin.org%2F"
+)
+class TestKaggleOperator:
     """
-    Test Sample Operator.
+    Test Kaggle Operator.
     """
 
     @requests_mock.mock()
     def test_operator(self, m):
-
         # Mock endpoint
-        m.get('https://www.httpbin.org/', json={'data': 'mocked response'})
+        m.get("https://www.httpbin.org/", json={"data": "mocked response"})
 
-        operator = SampleOperator(
-            task_id='run_operator',
-            sample_conn_id='conn_sample',
-            method='get'
+        operator = KaggleOperator(
+            task_id="run_operator",
+            kaggle_conn_id="conn_kaggle",
         )
 
         # Airflow calls the operator's execute method at runtime with the task run's bespoke context dictionary
@@ -49,5 +49,4 @@ class TestSampleOperator:
         log.info(response_payload_json)
 
         # Assert the API call returns expected mocked payload
-        assert response_payload_json['data'] == 'mocked response'
-
+        assert response_payload_json["data"] == "mocked response"
