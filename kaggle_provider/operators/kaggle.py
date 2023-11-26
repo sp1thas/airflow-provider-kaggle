@@ -1,8 +1,7 @@
 from __future__ import annotations
 
-from typing import TYPE_CHECKING, Any, Dict, Union
+from typing import TYPE_CHECKING, Dict, Union
 
-from airflow.exceptions import AirflowException
 from airflow.models import BaseOperator
 
 from kaggle_provider.hooks.kaggle import KaggleHook

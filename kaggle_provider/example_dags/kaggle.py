@@ -8,10 +8,8 @@ from kaggle_provider.operators.kaggle import KaggleOperator
 @dag(
     start_date=datetime(2023, 1, 1),
     schedule=None,
-    # ``default_args`` will get passed on to each task. You can override them on a per-task basis during
-    # operator initialization.
-    default_args={"retries": 2, "kaggle_conn_id": "kaggle_default"},
-    tags=["example"],
+    default_args={"kaggle_conn_id": "kaggle_default"},
+    tags=["kaggle"],
 )
 def kaggle_workflow():
     """
