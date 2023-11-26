@@ -9,7 +9,7 @@
 <h1 align="center">
   Airflow Kaggle Provider
 </h1>
-  <h3 align="center">
+<h3 align="center">
   Airflow operators and hooks for interacting with the Kaggle API
 </h3>
 <p align="center">
@@ -18,7 +18,6 @@
     <img alt="pre-commit enabled" src="https://img.shields.io/badge/pre--commit-enabled-brightgreen?logo=pre-commit&logoColor=white">
     <img alt="Apache Airflow version" src="https://img.shields.io/badge/Apache_Airflow-%3E=2.0-orange">
 </p>
-<br/>
 
 ## Overview
 
@@ -30,7 +29,7 @@ using this provider you can run any command supported by the [kaggle-api](https:
 
 Pre-requisites: An environment running `apache-airflow` >= 2.0
 
-```
+```shell
 pip install airflow-provider-kaggle
 ```
 
@@ -40,8 +39,7 @@ In order to use this airflow-provider, you have to create a `kaggle` connection:
 
 - `Conn ID`: `kaggle_default`
 - `Conn Type`: `Kaggle`
-- `User`: `<username>`
-- `Key`: `<key>`
+- `Extra`: `<kaggle.json>`
 
 **NOTE**: More details on how to get your Kaggle credentials are available [here](https://github.com/Kaggle/kaggle-api#api-credentials)
 
