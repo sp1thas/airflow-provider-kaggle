@@ -20,6 +20,12 @@
 </p>
 <br/>
 
+## Overview
+
+This airflow provider allows you to interact with the Kaggle API using the corresponding CLI tool. This provider is
+implemented in an abstract way in order to provide the maximum backward and forward compatibility, as a result,
+using this provider you can run any command supported by the [kaggle-api](https://github.com/Kaggle/kaggle-api).
+
 ## Installation
 
 Pre-requisites: An environment running `apache-airflow` >= 2.0
@@ -30,9 +36,47 @@ pip install airflow-provider-kaggle
 
 ## Configuration
 
-In the Airflow Connections UI, create a new connection for Hightouch.
+In order to use this airflow-provider, you have to create a `kaggle` connection:
 
 - `Conn ID`: `kaggle_default`
 - `Conn Type`: `Kaggle`
 - `User`: `<username>`
-- `Password`: `<password>`
+- `Key`: `<key>`
+
+**NOTE**: More details on how to get your Kaggle credentials are available [here](https://github.com/Kaggle/kaggle-api#api-credentials)
+
+## Usage
+
+### Operators
+
+#### `kaggle_provider.operators.kaggle.KaggleOperator`
+
+This is the main operator that can be used to execute any kaggle cli command:
+
+```python
+from kaggle_provider.operators.kaggle import KaggleOperator
+
+list_competitions_op = KaggleOperator(
+    command='competitions',
+    subcommand='list',
+    optional_arguments={'m': True},
+)
+```
+
+### Hooks
+
+#### `kaggle_provider.hooks.kaggle.KaggleHook`
+
+This is the kaggle hook which is used by the operator and can also be used directly
+in your custom operator too.
+
+```python
+from kaggle_provider.hooks.kaggle import KaggleHook
+
+hook = KaggleHook(kaggle_conn_id='kaggle_default')
+hook.run(
+    command='datasets',
+    subcommand='list',
+    m=True,
+)
+```
