@@ -59,6 +59,7 @@ class KaggleHook(BaseHook):
     ) -> None:
         super().__init__()
         self.kaggle_conn_id = kaggle_conn_id
+        self.creds = None
 
     def get_conn(self) -> Dict[str, str]:
         """
@@ -86,7 +87,7 @@ class KaggleHook(BaseHook):
         """
         from sh import kaggle
 
-        _env = self.get_conn()
+        self.creds = self.get_conn()
 
         command_base = []
         if command:
@@ -94,7 +95,7 @@ class KaggleHook(BaseHook):
             if subcommand:
                 command_base.append(subcommand)
 
-        command = kaggle.bake(*command_base, **optional_arguments, _env=_env)
+        command = kaggle.bake(*command_base, **optional_arguments, _env=self.creds)
 
         self.log.info(f"Running: f{str(command)}")
 

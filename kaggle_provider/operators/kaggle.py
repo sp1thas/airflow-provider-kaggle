@@ -39,7 +39,7 @@ class KaggleOperator(BaseOperator):
         self,
         *,
         command: str | None = None,
-        subcommand: str = "POST",
+        subcommand: str | None = None,
         optional_arguments: Dict[str, Union[str, bool]] | None = None,
         kaggle_conn_id: str = KaggleHook.default_conn_name,
         **kwargs,
