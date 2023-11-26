@@ -31,7 +31,7 @@ class KaggleOperator(BaseOperator):
     template_fields = ["command", "subcommand", "optional_arguments", "kaggle_bin_path"]
     template_fields_renderers = {"optional_arguments": "py"}
     template_ext = ()
-    ui_color = "#f4a460"
+    ui_color = "#20beff"
 
     def __init__(
         self,
