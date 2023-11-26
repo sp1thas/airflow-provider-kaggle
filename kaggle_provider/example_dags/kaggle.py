@@ -23,12 +23,15 @@ def kaggle_workflow():
     - id: kaggle_default
     - type: kaggle
     """
+
+    # $ kaggle c list --sort-by prize -v
     competitions_list_op = KaggleOperator(
         command="c",
         subcommand="list",
         optional_arguments={"sort-by": "prize", "v": True},
     )
 
+    # $ kaggle d list --sort-by votes -m
     datasets_list_op = KaggleOperator(
         command="d",
         subcommand="list",
