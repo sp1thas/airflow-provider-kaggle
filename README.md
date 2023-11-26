@@ -3,7 +3,7 @@
     <img alt="Airflow" src="https://cwiki.apache.org/confluence/download/attachments/145723561/airflow_transparent.png?api=v2" width="60" />
   </a>
   <a href="https://www.kaggle.com">
-    <img alt="Kaggle" src="https://storage.googleapis.com/kaggle-organizations/4/thumbnail.png" width="60" />
+    <img alt="Kaggle" src="https://www.svgrepo.com/show/349422/kaggle.svg" width="60" />
   </a>
 </p>
 <h1 align="center">
