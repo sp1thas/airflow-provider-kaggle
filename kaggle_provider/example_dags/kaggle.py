@@ -26,16 +26,18 @@ def kaggle_workflow():
 
     # $ kaggle c list --sort-by prize -v
     competitions_list_op = KaggleOperator(
+        task_id="competition_list",
         command="c",
         subcommand="list",
-        optional_arguments={"sort-by": "prize", "v": True},
+        optional_arguments={"sort-by": "prize"},
     )
 
     # $ kaggle d list --sort-by votes -m
     datasets_list_op = KaggleOperator(
+        task_id="dataset_list",
         command="d",
         subcommand="list",
-        optional_arguments={"sort-by": "votes", "m": True},
+        optional_arguments={"sort-by": "votes"},
     )
 
     competitions_list_op >> datasets_list_op
