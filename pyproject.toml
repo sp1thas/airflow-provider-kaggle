@@ -19,10 +19,10 @@ dependencies = ["apache-airflow>=2.0", "kaggle", "sh"]
 
 [project.optional-dependencies]
 dev = ["pre-commit"]
-tests = ["pytest"]
+test = ["pytest"]
 
 [project.urls]
-Homepage = "https://simakis.me"
+Homepage = "https://github.com/sp1thas/airflow-provider-kaggle/"
 Source = "https://github.com/sp1thas/airflow-provider-kaggle/"
 
 [project.readme]
