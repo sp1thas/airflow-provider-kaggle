@@ -22,4 +22,6 @@ jobs:
       - uses: actions/setup-python@v4
       - run: python3 -m pip install --upgrade pip
       - run: pip install -e '.[test]'
-      - run: pytest
+      - env:
+          KAGGLE_JSON: ${{ secrets.KAGGLE_JSON }}
+        run: pytest tests/

@@ -16,7 +16,7 @@ classifiers = [
 ]
 dynamic = ["version"]
 requires-python = "~=3.8"
-dependencies = ["apache-airflow>=2.0", "kaggle>=1.5", "sh>=2.0"]
+dependencies = ["apache-airflow>=2.0", "kaggle>=1.5"]
 
 [project.optional-dependencies]
 dev = ["pre-commit"]
