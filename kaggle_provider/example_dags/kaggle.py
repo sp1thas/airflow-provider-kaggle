@@ -13,13 +13,13 @@ def kaggle_workflow():
     competitions_list_op = KaggleOperator(
         task_id="competitions_list",
         command="competitions_list",
-        arguments={"sort_by": "prize"},
+        op_kwargs={"sort_by": "prize"},
     )
 
     datasets_list_op = KaggleOperator(
         task_id="datasets_list",
         command="datasets_list",
-        arguments={"sort_by": "votes", "user": "sp1thas"},
+        op_kwargs={"sort_by": "votes", "user": "sp1thas"},
     )
 
     competitions_list_op >> datasets_list_op

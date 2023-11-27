@@ -50,15 +50,16 @@ class KaggleHook(BaseHook):
     def run(
         self,
         command: str,
-        **arguments: Any,
+        *args: Any,
+        **kwargs: Any,
     ) -> Any:
         """
         Performs the kaggle command
 
         :param command: kaggle command
         :type command: str
-        :param arguments: additional kaggle command optional arguments
-        :type arguments: any
+        :param args: required positional kaggle command arguments
+        :type kwargs: optional keyword kaggle command arguments
         """
         with TemporaryCredentials(connection=self.get_conn()):
             import kaggle
@@ -68,7 +69,7 @@ class KaggleHook(BaseHook):
             except AttributeError as e:
                 raise ValueError(f"Unknown command: {command}") from e
 
-            response = clb(**arguments)
+            response = clb(*args or (), **kwargs or {})
 
             return json.loads(json.dumps(response, cls=DefaultEncoder))
 

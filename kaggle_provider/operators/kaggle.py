@@ -1,7 +1,7 @@
 from __future__ import annotations
 
 import pprint
-from typing import TYPE_CHECKING, Dict, Any
+from typing import TYPE_CHECKING, Any, Collection, Mapping
 
 from airflow.models import BaseOperator
 
@@ -28,19 +28,21 @@ class KaggleOperator(BaseOperator):
     def __init__(
         self,
         command: str,
-        arguments: Dict[str, Any] | None = None,
+        op_args: Collection[Any] | None = None,
+        op_kwargs: Mapping[str, Any] | None = None,
         kaggle_conn_id: str = KaggleHook.default_conn_name,
         **kwargs,
     ) -> None:
         super().__init__(**kwargs)
-        self.kaggle_conn_id = kaggle_conn_id
-        self.arguments = arguments
         self.command = command
+        self.op_args = op_args
+        self.op_kwargs = op_kwargs
+        self.kaggle_conn_id = kaggle_conn_id
 
     def execute(self, context: Context) -> Any:
         hook = KaggleHook(kaggle_conn_id=self.kaggle_conn_id)
 
-        response = hook.run(command=self.command, **self.arguments or {})
+        response = hook.run(self.command, *self.op_args or (), **self.op_kwargs or {})
         response = self._serialize_response(response)
         self.log.info(pprint.pformat(response))
         return response
