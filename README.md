@@ -54,11 +54,7 @@ This is the main operator that can be used to execute any kaggle cli command:
 ```python
 from kaggle_provider.operators.kaggle import KaggleOperator
 
-list_competitions_op = KaggleOperator(
-    command='competitions',
-    subcommand='list',
-    optional_arguments={'m': True},
-)
+list_competitions_op = KaggleOperator(task_id='foo', command='competitions_list', op_kwargs={'sort_by': 'prize'})
 ```
 
 ### Hooks
@@ -71,10 +67,54 @@ in your custom operator too.
 ```python
 from kaggle_provider.hooks.kaggle import KaggleHook
 
-hook = KaggleHook(kaggle_conn_id='kaggle_default')
-hook.run(
-    command='datasets',
-    subcommand='list',
-    m=True,
-)
+hook = KaggleHook()
+hook.run('datasets_list', sort_by="votes", user="sp1thas")
 ```
+
+
+### Available commands
+
+ - `competitions_list`
+ - `competition_submit`
+ - `competition_submissions`
+ - `competition_list_files`
+ - `competition_download_file`
+ - `competition_download_files`
+ - `competition_leaderboard_download`
+ - `competition_leaderboard_view`
+ - `dataset_list`
+ - `dataset_metadata_prep`
+ - `dataset_metadata_update`
+ - `dataset_metadata`
+ - `dataset_list_files`
+ - `dataset_status`
+ - `dataset_download_file`
+ - `dataset_download_files`
+ - `dataset_create_version`
+ - `dataset_initialize`
+ - `dataset_create_new`
+ - `download_file`
+ - `kernels_list`
+ - `kernels_initialize`
+ - `kernels_push`
+ - `kernels_pull`
+ - `kernels_output`
+ - `kernels_status`
+ - `model_get`
+ - `model_list`
+ - `model_initialize`
+ - `model_create_new`
+ - `model_delete`
+ - `model_update`
+ - `model_instance_get`
+ - `model_instance_initialize`
+ - `model_instance_create`
+ - `model_instance_delete`
+ - `model_instance_update`
+ - `model_instance_version_create`
+ - `model_instance_version_download`
+ - `model_instance_version_delete`
+ - `download_needed`
+
+Details regarding the command arguments can be found in the corresponding method docstring of this
+[module](https://github.com/Kaggle/kaggle-api/blob/main/kaggle/api/kaggle_api_extended.py)

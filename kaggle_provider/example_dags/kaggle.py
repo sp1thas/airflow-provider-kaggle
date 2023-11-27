@@ -1,6 +1,5 @@
-from pendulum import datetime
-
 from airflow.decorators import dag
+from pendulum import datetime
 
 from kaggle_provider.operators.kaggle import KaggleOperator
 
@@ -8,34 +7,19 @@ from kaggle_provider.operators.kaggle import KaggleOperator
 @dag(
     start_date=datetime(2023, 1, 1),
     schedule=None,
-    default_args={"kaggle_conn_id": "kaggle_default"},
     tags=["kaggle"],
 )
 def kaggle_workflow():
-    """
-    ### Kaggle DAG
-
-    Showcases the kaggle provider package's operator.
-
-    To run this example, create a kaggle connection with:
-    - id: kaggle_default
-    - type: kaggle
-    """
-
-    # $ kaggle c list --sort-by prize -v
     competitions_list_op = KaggleOperator(
-        task_id="competition_list",
-        command="c",
-        subcommand="list",
-        optional_arguments={"sort-by": "prize"},
+        task_id="competitions_list",
+        command="competitions_list",
+        op_kwargs={"sort_by": "prize"},
     )
 
-    # $ kaggle d list --sort-by votes -m
     datasets_list_op = KaggleOperator(
-        task_id="dataset_list",
-        command="d",
-        subcommand="list",
-        optional_arguments={"sort-by": "votes"},
+        task_id="datasets_list",
+        command="datasets_list",
+        op_kwargs={"sort_by": "votes", "user": "sp1thas"},
     )
 
     competitions_list_op >> datasets_list_op

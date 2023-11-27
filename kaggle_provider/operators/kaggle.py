@@ -1,6 +1,7 @@
 from __future__ import annotations
 
-from typing import TYPE_CHECKING, Dict, Union
+import pprint
+from typing import TYPE_CHECKING, Any, Collection, Mapping
 
 from airflow.models import BaseOperator
 
@@ -12,48 +13,36 @@ if TYPE_CHECKING:
 
 class KaggleOperator(BaseOperator):
     """
-    Calls Kaggle CLI.
-
-    :param command: The Kaggle command. (templated)
-    :type command: str
-    :param subcommand: The Kaggle subcommand. (templated)
-    :type subcommand: str
-    :param optional_arguments: The Kaggle optional arguments. (templated)
-    :type optional_arguments: a dictionary of key/value pairs
+    :param command: kaggle command.
+    :param op_args: Required positional arguments. (templated)
+    :param op_kwargs: Optional keyword arguments. (templated)
     :param kaggle_conn_id: connection to run the operator with
     :type kaggle_conn_id: str
-    :param kaggle_bin_path: kaggle binary path
-    :type kaggle_bin_path: str
     """
 
     # Specify the arguments that are allowed to parse with jinja templating
-    template_fields = ["command", "subcommand", "optional_arguments", "kaggle_bin_path"]
-    template_fields_renderers = {"optional_arguments": "py"}
+    template_fields = ["command", "op_args", "op_kwargs"]
+    template_fields_renderers = {"op_args": "py", "op_kwargs": "py"}
     template_ext = ()
     ui_color = "#20beff"
 
     def __init__(
         self,
-        *,
-        command: str | None = None,
-        subcommand: str | None = None,
-        optional_arguments: Dict[str, Union[str, bool]] | None = None,
+        command: str,
+        op_args: Collection[Any] | None = None,
+        op_kwargs: Mapping[str, Any] | None = None,
         kaggle_conn_id: str = KaggleHook.default_conn_name,
-        kaggle_bin_path: str | None = None,
         **kwargs,
     ) -> None:
         super().__init__(**kwargs)
-        self.kaggle_conn_id = kaggle_conn_id
         self.command = command
-        self.subcommand = subcommand
-        self.optional_arguments = optional_arguments or {}
-        self.kaggle_bin_path = kaggle_bin_path
+        self.op_args = op_args
+        self.op_kwargs = op_kwargs
+        self.kaggle_conn_id = kaggle_conn_id
 
-    def execute(self, context: Context) -> str:
-        hook = KaggleHook(
-            kaggle_conn_id=self.kaggle_conn_id, kaggle_bin_path=self.kaggle_bin_path
-        )
+    def execute(self, context: Context) -> Any:
+        hook = KaggleHook(kaggle_conn_id=self.kaggle_conn_id)
 
-        return hook.run(
-            command=self.command, subcommand=self.subcommand, **self.optional_arguments
-        )
+        response = hook.run(self.command, *self.op_args or (), **self.op_kwargs or {})
+        self.log.info(pprint.pformat(response))
+        return response

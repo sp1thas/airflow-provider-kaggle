@@ -1,16 +1,11 @@
-import pytest
-
 from kaggle_provider.operators.kaggle import KaggleOperator
 
 
-@pytest.mark.skip(reason="not implemented yet")
-def test_operator():
+def test__operator_competitions_list(hook):
     operator = KaggleOperator(
-        command=None,
-        subcommand=None,
-        optional_arguments={"v": True},
-        task_id="run_operator",
-        kaggle_conn_id="conn_kaggle",
+        task_id="foo",
+        command="competitions_list",
+        op_kwargs={"sort_by": "numberOfTeams"},
     )
-    stdout = operator.execute(context={})
-    assert stdout == ""
+    response = operator.execute(context={})
+    assert response[0]["titleNullable"] == "Titanic - Machine Learning from Disaster"

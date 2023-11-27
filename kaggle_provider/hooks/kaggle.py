@@ -1,14 +1,14 @@
 from __future__ import annotations
 
-import os.path
+import json
 import traceback
-from typing import Any, Tuple, Optional, Union
+from typing import Any, Tuple
 
-import sh
 from airflow.hooks.base import BaseHook
 from airflow.models.connection import Connection
 
-from kaggle_provider.utils.credentials import CredentialsTemporaryFile
+from kaggle_provider._utils.credentials import TemporaryCredentials
+from kaggle_provider._utils.encoder import DefaultEncoder
 
 
 class KaggleHook(BaseHook):
@@ -17,8 +17,6 @@ class KaggleHook(BaseHook):
 
     :param kaggle_conn_id: connection that has the kaggle authentication credentials.
     :type kaggle_conn_id: str
-    :param kaggle_bin_path: Kaggle binary path.
-    :type kaggle_bin_path: str
     """
 
     conn_name_attr = "kaggle_conn_id"
@@ -31,32 +29,17 @@ class KaggleHook(BaseHook):
         """Returns custom field behaviour"""
 
         return {
-            "hidden_fields": ["host", "schema", "port", "login", "password"],
+            "hidden_fields": ["port", "password", "login", "schema", "host"],
+            "relabeling": {},
+            "placeholders": {},
         }
 
     def __init__(
         self,
         kaggle_conn_id: str = default_conn_name,
-        kaggle_bin_path: str | None = None,
     ) -> None:
         super().__init__()
         self.kaggle_conn_id = kaggle_conn_id
-        self.kaggle_bin_path = kaggle_bin_path or self._get_kaggle_bin()
-
-        if self.kaggle_bin_path and not os.path.exists(self.kaggle_bin_path):
-            raise RuntimeError(f"{self.kaggle_bin_path} does not exist")
-
-        self.command = sh.Command(self.kaggle_bin_path)
-
-    @staticmethod
-    def _get_kaggle_bin() -> Optional[str]:
-        potential_paths = (
-            os.path.join(os.getenv("HOME", ""), ".local", "bin", "kaggle"),
-        )
-        for p_path in potential_paths:
-            if os.path.exists(p_path):
-                return p_path
-        raise RuntimeError("kaggle binary can not be found")
 
     def get_conn(self) -> Connection:
         """
@@ -66,38 +49,36 @@ class KaggleHook(BaseHook):
 
     def run(
         self,
-        command: Optional[str] = None,
-        subcommand: Optional[str] = None,
-        **optional_arguments: Union[str, bool],
-    ) -> str:
+        command: str,
+        *args: Any,
+        **kwargs: Any,
+    ) -> Any:
         """
         Performs the kaggle command
 
         :param command: kaggle command
         :type command: str
-        :param subcommand: kaggle subcommand
-        :type subcommand: str
-        :param optional_arguments: additional kaggle command optional arguments
-        :type optional_arguments: dict
+        :param args: required positional kaggle command arguments
+        :type kwargs: optional keyword kaggle command arguments
         """
-        command_base = []
-        if command:
-            command_base.append(command)
-            if subcommand:
-                command_base.append(subcommand)
+        with TemporaryCredentials(connection=self.get_conn()):
+            import kaggle
 
-        command = self.command.bake(*command_base, **optional_arguments)  # type: ignore
+            try:
+                clb = getattr(kaggle.api, command)
+            except AttributeError as e:
+                raise ValueError(f"Unknown command: {command}") from e
 
-        with CredentialsTemporaryFile(connection=self.get_conn()):
-            stdout = command()  # type: ignore
+            response = clb(*args or (), **kwargs or {})
 
-        self.log.info(f"\n{stdout}\n")  # type: ignore
-        return stdout
+            return json.loads(json.dumps(response, cls=DefaultEncoder))
 
     def test_connection(self) -> Tuple[bool, str]:
         """Test a connection"""
         try:
-            self.run(command="config", subcommand="view")
-            return True, "Connection successfully tested"
+            with TemporaryCredentials(connection=self.get_conn()):
+                import kaggle
+
+                return True, "Connection successfully tested"
         except Exception as e:
-            return False, "\n".join(traceback.format_exception(e))
+            return False, "\n".join(traceback.format_exception(e))  # type: ignore
