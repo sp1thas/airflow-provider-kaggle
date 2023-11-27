@@ -1,12 +1,11 @@
 __version__ = "1.0.0"
 
 
-## This is needed to allow Airflow to pick up specific metadata fields it needs for certain features.
 def get_provider_info():
     return {
-        "package-name": "airflow-provider-kaggle",  # Required
-        "name": "Kaggle",  # Required
-        "description": "A airflow provider for Kaggle API",  # Required
+        "package-name": "airflow-provider-kaggle",
+        "name": "Kaggle",
+        "description": "A airflow provider for Kaggle API",
         "connection-types": [
             {
                 "connection-type": "kaggle",
@@ -14,5 +13,5 @@ def get_provider_info():
             }
         ],
         "extra-links": [],
-        "versions": [__version__],  # Required
+        "versions": [__version__],
     }
