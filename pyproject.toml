@@ -12,10 +12,11 @@ description = "A Kaggle Apache Airflow provider package."
 classifiers = [
     "Framework :: Apache Airflow",
     "Framework :: Apache Airflow :: Provider",
+    "Development Status :: 3 - Alpha",
 ]
 dynamic = ["version"]
 requires-python = "~=3.8"
-dependencies = ["apache-airflow>=2.0", "kaggle", "sh"]
+dependencies = ["apache-airflow>=2.0", "kaggle>=1.5", "sh>=2.0"]
 
 [project.optional-dependencies]
 dev = ["pre-commit"]
