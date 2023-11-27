@@ -54,10 +54,7 @@ This is the main operator that can be used to execute any kaggle cli command:
 ```python
 from kaggle_provider.operators.kaggle import KaggleOperator
 
-list_competitions_op = KaggleOperator(
-    command='competitions_list',
-    arguments={'sort_by': 'prize'},
-)
+list_competitions_op = KaggleOperator(task_id='foo', command='competitions_list', op_kwargs={'sort_by': 'prize'})
 ```
 
 ### Hooks
@@ -71,10 +68,7 @@ in your custom operator too.
 from kaggle_provider.hooks.kaggle import KaggleHook
 
 hook = KaggleHook()
-hook.run(
-    command='datasets_list',
-    arguments={"sort_by": "votes", "user": "sp1thas"},
-)
+hook.run('datasets_list', sort_by="votes", user="sp1thas")
 ```
 
 
@@ -121,3 +115,6 @@ hook.run(
  - `model_instance_version_download`
  - `model_instance_version_delete`
  - `download_needed`
+
+Details regarding the command arguments can be found in the corresponding method docstring of this
+[module](https://github.com/Kaggle/kaggle-api/blob/main/kaggle/api/kaggle_api_extended.py)

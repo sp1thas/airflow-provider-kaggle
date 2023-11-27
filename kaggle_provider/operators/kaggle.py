@@ -13,15 +13,16 @@ if TYPE_CHECKING:
 
 class KaggleOperator(BaseOperator):
     """
-    :param optional_arguments: The Kaggle optional arguments. (templated)
-    :type optional_arguments: a dictionary of key/value pairs
+    :param command: kaggle command.
+    :param op_args: Required positional arguments. (templated)
+    :param op_kwargs: Optional keyword arguments. (templated)
     :param kaggle_conn_id: connection to run the operator with
     :type kaggle_conn_id: str
     """
 
     # Specify the arguments that are allowed to parse with jinja templating
-    template_fields = ["command", "arguments"]
-    template_fields_renderers = {"arguments": "py"}
+    template_fields = ["command", "op_args", "op_kwargs"]
+    template_fields_renderers = {"op_args": "py", "op_kwargs": "py"}
     template_ext = ()
     ui_color = "#20beff"
 
@@ -43,15 +44,5 @@ class KaggleOperator(BaseOperator):
         hook = KaggleHook(kaggle_conn_id=self.kaggle_conn_id)
 
         response = hook.run(self.command, *self.op_args or (), **self.op_kwargs or {})
-        response = self._serialize_response(response)
         self.log.info(pprint.pformat(response))
         return response
-
-    @staticmethod
-    def _serialize_response(response: Any):
-        if isinstance(response, list):
-            return [d.__dict__ if hasattr(d, "__dict__") else d for d in response]
-        elif hasattr(response, "__dict__"):
-            return response.__dict__
-        else:
-            return response
