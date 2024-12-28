@@ -54,7 +54,11 @@ This is the main operator that can be used to execute any kaggle cli command:
 ```python
 from kaggle_provider.operators.kaggle import KaggleOperator
 
-list_competitions_op = KaggleOperator(task_id='foo', command='competitions_list', op_kwargs={'sort_by': 'prize'})
+list_competitions_op = KaggleOperator(
+    task_id='foo',
+    command='competitions_list',
+    op_kwargs={'sort_by': 'prize'}
+)
 ```
 
 ### Hooks
